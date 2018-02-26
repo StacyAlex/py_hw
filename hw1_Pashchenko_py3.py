@@ -6,11 +6,11 @@ class SuperDict(dict):
 
     def __init__(self, inj):
 
-        if(isinstance(inj, dict)):#ежели инициализируем словарем
+        if(isinstance(inj, dict)):# ежели инициализируем словарем
             self.elemlist = dict(inj.items())
             #print('init:', self.elemlist)
 
-        elif (isinstance(inj, str)):#ежели json
+        elif (isinstance(inj, str)):#   ежели json
             if (inj.endswith('.json')):
 
                 with open(inj, 'r') as js:
@@ -18,14 +18,18 @@ class SuperDict(dict):
                 self.elemlist = tmpd
                 #print('init:', self.elemlist)
 
-            elif (inj.endswith('.csv')):#csv
+            elif (inj.endswith('.csv')):#   csv
 
                 with open(inj, 'r') as js:
                     reader = csv.reader(js)
                     self.elemlist = {}
 
                     for row in reader:
-                        self.elemlist.update({row[0]:row[1]})
+                        if len(row) > 2:
+                            print("error occured: too many columns")
+                            next(reader)
+                        else:
+                            self.elemlist.update({row[0]:row[1]})
 
                     #print('init:', self.elemlist)
 ##############################################################         переделать
@@ -95,13 +99,21 @@ class SuperDict(dict):
 
     def to_json(self, adr):
         with open(adr, 'w') as ofile:
-            
+            json.dump(self.elemlist, ofile)
 
+    def get_key_starts_from(self, word):
+        temp = list(self.keys())
+        for i in range(0, self.__len__()):
+            if temp[i].startswith(word):
+                print("selected keys:", temp[i])
+
+##########  инициализация тремя способами
 d = {'a':'8', 'b':'9'}
 sd1 = SuperDict(d)
 sd2 = SuperDict('C:/Users/User/PycharmProjects/test/venv/inits.json')
 sd3 = SuperDict('C:/Users/User/PycharmProjects/test/inits.csv')
 
+#########   методы
 print("sd1:", sd1, "\nsd2:", sd2, "\nsd3:", sd3)
 print("__getitem__():", sd1.__getitem__('b'))
 
@@ -123,4 +135,6 @@ print("max_key_len():", sd3.max_key_len())
 print("__add__():", sd3 + sd1)
 
 sd3.to_csv("C:/Users/User/PycharmProjects/test/outfile.csv")
+sd3.to_json('C:/Users/User/PycharmProjects/test/venv/outfile.json')
 
+sd3.get_key_starts_from('xy')

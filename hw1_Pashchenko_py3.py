@@ -13,9 +13,13 @@ class SuperDict(dict):
         elif (isinstance(inj, str)):#   ежели json
             if (inj.endswith('.json')):
 
+                self.elemlist = {}
                 with open(inj, 'r') as js:
-                    tmpd = json.load(js)
-                self.elemlist = tmpd
+                    
+                    for line in js:
+                        tmpd = json.loads(str(line))
+                        self.elemlist.update(tmpd)
+
                 #print('init:', self.elemlist)
 
             elif (inj.endswith('.csv')):#   csv
@@ -26,13 +30,12 @@ class SuperDict(dict):
 
                     for row in reader:
                         if len(row) > 2:
-                            print("error occured: too many columns")
-                            next(reader)
+                            print("------\nerror occured: too many columns in .csv file. invalid string ignored.\n------")
+                            #next(reader)
                         else:
                             self.elemlist.update({row[0]:row[1]})
 
                     #print('init:', self.elemlist)
-##############################################################         переделать
         else:
             print("initialization error")
 
@@ -114,7 +117,9 @@ sd2 = SuperDict('C:/Users/User/PycharmProjects/test/venv/inits.json')
 sd3 = SuperDict('C:/Users/User/PycharmProjects/test/inits.csv')
 
 #########   методы
-print("sd1:", sd1, "\nsd2:", sd2, "\nsd3:", sd3)
+print("here are three ways of initialization:\n\nsd1:", sd1, "\nsd2:", sd2, "\nsd3:", sd3, "\n------")
+print("required methods:\n")
+
 print("__getitem__():", sd1.__getitem__('b'))
 
 sd2.clear()

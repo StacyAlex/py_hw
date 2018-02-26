@@ -1,6 +1,8 @@
 import json
 import csv
 import random
+import os
+import sys
 
 class SuperDict(dict):
 
@@ -15,7 +17,7 @@ class SuperDict(dict):
 
                 self.elemlist = {}
                 with open(inj, 'r') as js:
-                    
+
                     for line in js:
                         tmpd = json.loads(str(line))
                         self.elemlist.update(tmpd)
@@ -143,3 +145,36 @@ sd3.to_csv("C:/Users/User/PycharmProjects/test/outfile.csv")
 sd3.to_json('C:/Users/User/PycharmProjects/test/venv/outfile.json')
 
 sd3.get_key_starts_from('xy')
+
+
+#############################################################################   file_tree function:
+
+def file_tree(path, file_filter = None):
+
+    for root, subdirs, files in os.walk(path):
+        print('--\nroot = ' + root)
+        list_file_path = os.path.join(root, 'my-directory-list.txt')
+        print('list_file_path = ' + list_file_path)
+        print('list_file_path = ' + list_file_path)
+
+        with open(list_file_path, 'wb') as list_file:
+            for subdir in subdirs:
+                print('\t- subdirectory ' + subdir)
+
+            for filename in files:
+                file_path = os.path.join(root, filename)
+
+                if file_filter is None:
+                    print('\t- file %s (full path: %s)' % (filename, file_path))
+                else:
+                    if str(filename).endswith(file_filter):
+                        print('\t- file %s (full path: %s)' % (filename, file_path))
+
+                with open(file_path, 'rb') as f:
+                    f_content = f.read()
+                    list_file.write(('The file %s contains:\n' % filename).encode('utf-8'))
+                    list_file.write(f_content)
+                    list_file.write(b'\n')
+
+file_tree("C:/Users/User/Desktop/Kursuch/CurseSuch", "ue.pdf")
+file_tree("C:/Users/User/Desktop/Kursuch/CurseSuch")

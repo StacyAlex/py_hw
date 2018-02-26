@@ -112,40 +112,11 @@ class SuperDict(dict):
             if temp[i].startswith(word):
                 print("selected keys:", temp[i])
 
-##########  инициализация тремя способами
-d = {'a':'8', 'b':'9'}
-sd1 = SuperDict(d)
-sd2 = SuperDict('C:/Users/User/PycharmProjects/test/venv/inits.json')
-sd3 = SuperDict('C:/Users/User/PycharmProjects/test/inits.csv')
+                
+print("enter full path to your initialization file as a string:")
+tstr = input()
 
-#########   методы
-print("here are three ways of initialization:\n\nsd1:", sd1, "\nsd2:", sd2, "\nsd3:", sd3, "\n------")
-print("required methods:\n")
-
-print("__getitem__():", sd1.__getitem__('b'))
-
-sd2.clear()
-print("clear():", sd2)
-
-print("items():", list(sd3.items()))
-print("keys():", list(sd3.keys()))
-print("values():", list(sd3.values()))
-print("iteritems():", sd3.iteritems())
-print("iterkeys():", sd3.iterkeys())
-print("itervalues():", sd3.itervalues())
-print("__iter__():", sd3.__iter__())
-print("__eq__():", sd1 == sd2)
-print("__len__():", sd3.__len__())
-
-print("get_random_key():", sd3.get_random_key())
-print("max_key_len():", sd3.max_key_len())
-print("__add__():", sd3 + sd1)
-
-sd3.to_csv("C:/Users/User/PycharmProjects/test/outfile.csv")
-sd3.to_json('C:/Users/User/PycharmProjects/test/venv/outfile.json')
-
-sd3.get_key_starts_from('xy')
-
+sd = SuperDict(tsrt)
 
 #############################################################################   file_tree function:
 
@@ -176,5 +147,5 @@ def file_tree(path, file_filter = None):
                     list_file.write(f_content)
                     list_file.write(b'\n')
 
-file_tree("C:/Users/User/Desktop/Kursuch/CurseSuch", "ue.pdf")
-file_tree("C:/Users/User/Desktop/Kursuch/CurseSuch")
+#file_tree("C:/Users/User/Desktop/Kursuch/CurseSuch", "ue.pdf")
+#file_tree("C:/Users/User/Desktop/Kursuch/CurseSuch")
